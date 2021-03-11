@@ -35,12 +35,7 @@ int print_particip_info(const participants* participant) {
         participant->name, participant->surname, participant->role, participant->importance);
 }
 
-int parse_command(char* command_buffer, size_t buff_size) {
-    char delim[] = " ";
-    char* command = strtok(command_buffer, delim);
-}
-
-int enter_participant (char* buffer, participants* participant) {
+int fill_participant (char* buffer, participants* participant) {
     char* data =  strsep(&buffer, " ");
     participant->role = data;
     data =  strsep(&buffer, " ");
@@ -48,33 +43,45 @@ int enter_participant (char* buffer, participants* participant) {
     data =  strsep(&buffer, " ");
     participant->surname = data;
     data =  strsep(&buffer, " ");
-    participant->importance = strtol(data,NULL, 10);
+    participant->importance = strtol(data, NULL, 10);
     return 0;
 }
 
-int make_participants (size_t particip_count, participants* particips) {
+int make_participants (int particip_count, participants* particips, char* buffer[]) {
     particips = (participants*)malloc(sizeof(participants) * particip_count);
     if (particips == NULL) {
         printf("Can't allocate memory for participants");
         return 0;
     }
-    size_t buffer_size = 80;
-    char* buffer = (char*)malloc(buffer_size * sizeof(char));
     for (size_t i = 0; i < particip_count; i++) {
-        getline(&buffer, &buffer_size, stdin);
-        enter_participant(buffer, &particips[i]);
+        getline(&buffer[i], &strlen(buffer[i]), stdin);
+        fill_participant(buffer[i], &particips[i]);
     }
     return 0;
 }
 
-int main() //int argc, char *argv[]
+int enter_participant (char *argv[]) {
+    int size = 0;
+    scanf("%d", &size);
+    for (int i = 0; i < size; i++) {
+        getline(&argv[i], 120, stdin);
+    }
+    return 0;
+}
+
+int main(int argc, char *argv[]) //int argc, char *argv[]
 {
-    //if (argc <= 1) {
-      //  printf("No structures found, stopping program\n");
-        //return 0;
-    //}
+    participants* particips = NULL;
+    char *particip_data[] = NULL;
+    size_t particip_count = 0;
+    if (argc > 0) {
+        particip_data = argv;
+    } else {
+        
+    }
+    make_participants(argc, particips, particip_data);
     
-    char* command_buffer;
+    char* command_buffer = NULL;
     size_t cmd_buffer_size = 80;
     size_t char_cnt = 0;
     command_buffer = (char*)malloc(cmd_buffer_size * sizeof(char));

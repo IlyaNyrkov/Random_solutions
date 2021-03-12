@@ -1,4 +1,4 @@
-﻿/*Даны два массива целых чисел одинаковой длины A[0..n-1] и B[0..n-1].Необходимо найти
+/*Даны два массива целых чисел одинаковой длины A[0..n-1] и B[0..n-1].Необходимо найти
 первую пару индексов i0 и j0, , такую что A[i0] + B[j0] = max {A[i] + B[j], где 0 <= i
 < n, 0 <= j < n, i <= j}. Время работы - O(n). n ≤ 100000.
 */
@@ -20,7 +20,7 @@ pair<int, int> maxSum(int n, const vector<int>& arr1,
         if (arr1[i] > arr1[i_max]) {
             i_max = i;
         }
-        if (arr2[j] + arr1[i_max] > arr1[i0] + arr2[j0]) {
+        if (arr2[j] + arr1[i_max]> arr1[i0] + arr2[j0]) {
             j0 = j;
             i0 = i_max;
         }
@@ -34,4 +34,16 @@ void fill_array(vector<int>& arr, const size_t& n, istream& stream) {
         stream >> elem;
         arr.push_back(elem);
     }
+}
+
+int main() {
+    size_t n;
+    cin >> n;
+    vector<int> array1;
+    fill_array(array1, n, cin);
+    vector<int> array2;
+    fill_array(array2, n, cin);
+    pair<int, int> result = maxSum(n, array1, array2);
+    cout << result.first << " " << result.second;
+    return 0;
 }
